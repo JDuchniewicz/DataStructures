@@ -1,6 +1,9 @@
 #include <BST.hpp>
+#include <Trie.hpp>
 
-int main()
+constexpr int algoChoice = 1;
+
+void testTree()
 {
     BST<int> binaryTree;
     std::cout << "Adding to BST" << std::endl;
@@ -57,5 +60,34 @@ int main()
         std::cout << "Min is: " << min << std::endl;
     if (binaryTree.findMax(max))
         std::cout << "Max is: " << max << std::endl;
+}
+
+void testTrie()
+{
+    std::cout << "Trie insertion" << std::endl;
+    Trie trie;
+    trie.insert("they");
+    trie.insert("their");
+    trie.insert("amazing");
+    trie.insert("amaze");
+    trie.insert("amass");
+    trie.insert("massive");
+
+    std::cout << "Trie checking" << std::endl; // covers case -> is a string a substring?
+    std::cout << "Is 'they'?: " << trie.search("they") << std::endl;
+    std::cout << "Is 'their'?: " << trie.search("their") << std::endl;
+    std::cout << "Is 'amazing'?: " << trie.search("amazing") << std::endl;
+    std::cout << "Is 'amaze'?: " << trie.search("amaze") << std::endl;
+    std::cout << "Is 'amass'?: " << trie.search("amass") << std::endl;
+    std::cout << "Is 'massive'?: " << trie.search("massive") << std::endl;
+    std::cout << "Is 'steph'?: " << trie.search("steph") << std::endl;
+}
+
+int main()
+{
+    if constexpr (algoChoice == 0) // BST
+        testTree();
+    else if constexpr (algoChoice == 1) // Trie
+        testTrie();
     return 0;
 }
