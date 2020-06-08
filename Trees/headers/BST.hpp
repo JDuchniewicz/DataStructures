@@ -2,6 +2,7 @@
 
 #include <iostream>
 #include <queue>
+#include <stack>
 
 /* A recursive BST implementation */
 
@@ -103,8 +104,29 @@ public:
 
     void printLevelOrder() const
     {
-        std::cout << "Post order printing of the tree " << std::endl;
+        std::cout << "Level order printing of the tree " << std::endl;
         printLevelOrder(m_root);
+        std::cout << std::endl; 
+    }
+
+    void printPreOrderIterative() const
+    {
+        std::cout << "Pre order iterative printing of the tree " << std::endl;
+        printPreOrderIterative(m_root);
+        std::cout << std::endl; 
+    }
+
+    void printInOrderIterative() const
+    {
+        std::cout << "In order iterative printing of the tree " << std::endl;
+        printInOrderIterative(m_root);
+        std::cout << std::endl; 
+    }
+
+    void printPostOrderIterative() const
+    {
+        std::cout << "Post order iterative printing of the tree " << std::endl;
+        printPostOrderIterative(m_root);
         std::cout << std::endl; 
     }
 
@@ -203,15 +225,6 @@ private:
             return rheight + 1;
     }
 
-    void printInOrder(Node<T>* current) const
-    {
-        if (!current)
-            return;
-        printInOrder(current->left);
-        std::cout << current->data << " ";
-        printInOrder(current->right);
-    }
-
     void printPreOrder(Node<T>* current) const
     {
         if (!current)
@@ -219,6 +232,15 @@ private:
         std::cout << current->data << " ";
         printPreOrder(current->left);
         printPreOrder(current->right);
+    }
+
+    void printInOrder(Node<T>* current) const
+    {
+        if (!current)
+            return;
+        printInOrder(current->left);
+        std::cout << current->data << " ";
+        printInOrder(current->right);
     }
 
     void printPostOrder(Node<T>* current) const
@@ -258,5 +280,79 @@ private:
         }
     }
 
+    void printPreOrderIterative(Node<T>* current) const
+    {
+        if (!current)
+            return;
+
+        std::stack<Node<T>*> s;
+        s.push(current);
+
+        while (!s.empty())
+        {
+            current = s.top();
+            std::cout << current->data << " ";
+            s.pop();
+            
+            // push first right then left, so that left is processed first (after the root)
+            if (current->right)
+                s.push(current->right);
+            if (current->left)
+                s.push(current->left);
+        }
+    }
+
+    void printInOrderIterative(Node<T>* current) const
+    {
+        if (!current)
+            return;
+
+        std::stack<Node<T>*> s;
+        while (!s.empty() || current)
+        {
+            if (current) // go as much as possible left
+            {
+                s.push(current);
+                current = current->left;
+            }
+            else // else print current and go as much as possible right subtree
+            {
+                current = s.top();
+                s.pop();
+                std::cout << current->data << " ";
+                current = current->right;
+            }
+        }
+    }
+
+    void printPostOrderIterative(Node<T>* current) const
+    {
+        if (!current)
+            return;
+
+        std::stack<Node<T>*> s;
+
+        Node<T>* lastNodeVisited = nullptr;
+        while (!s.empty() || current)
+        {
+            if (current)
+            {
+                s.push(current);
+                current = current->left;
+            }
+            else // if there exists right node, and we are currently traversing from left, then go right
+            {
+                Node<T>* peekNode = s.top();
+                if (peekNode->right && lastNodeVisited != peekNode->right) // eliminates infinite iterations
+                    current = peekNode->right;
+                else // otherwise print current 
+                {
+                    std::cout << peekNode->data << " ";
+                    lastNodeVisited = s.top();
+                    s.pop();
+                }
+            }
+        }
+    }
     Node<T>* m_root = nullptr;
 };

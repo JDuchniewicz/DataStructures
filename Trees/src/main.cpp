@@ -20,6 +20,9 @@ int main()
     binaryTree.printInOrder();
     binaryTree.printPostOrder();
     binaryTree.printLevelOrder();
+    binaryTree.printPreOrderIterative();
+    binaryTree.printInOrderIterative();
+    binaryTree.printPostOrderIterative();
     std::cout << "Height is: " << binaryTree.height() << std::endl;
     int min = 0, max = 0;
     if (binaryTree.findMin(min))
