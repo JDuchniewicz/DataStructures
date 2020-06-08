@@ -8,7 +8,7 @@ constexpr int MAXSIZE = 200; // smaller value, for bigger heap has to be used
 constexpr int COLLSIZE = 10;
 
 // all callers have to provide their own hashing function, this uses vector
-template<typename K, typename H>
+template<typename K, typename V, typename H>
 class Hashmap
 {
 public:
@@ -22,20 +22,28 @@ public:
 
     }
 
-    void insert(K key)
+    void insert(K key, V value) // for hashmap with just values kept, there can be no collision!!! otherwise all hell loose
     {
         int hash = m_hash(key);
-        m_data[hash].push(key);
+        m_data[hash].push(value);
     }
     
-    bool remove(K key)
+    bool remove(K key, V value)
     {
         int hash = m_hash(key);
-        return m_data[hash].erase(key);
+        return m_data[hash].erase(value);
     }
 
+/*
+    V get(K key)
+    {
+        int hash = m_hash(key);
+        return m_data[hash].at()
+    }
+*/
+
 private:
-    Vector<K> m_data[MAXSIZE];
+    Vector<V> m_data[MAXSIZE];
     H m_hash;
 };
 
