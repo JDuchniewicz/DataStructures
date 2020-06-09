@@ -7,19 +7,19 @@
 /* A recursive BST implementation */
 
 template<typename T>
-struct Node
+struct BSTNode
 {
-    Node(T d, Node<T>* l, Node<T>* r) : data(d), left(l), right(r) {};
+    BSTNode(T d, BSTNode<T>* l, BSTNode<T>* r) : data(d), left(l), right(r) {};
 
-    ~Node()
+    ~BSTNode()
     {
         delete left;
         delete right;
     }
 
     T data;
-    Node<T>* left = nullptr;
-    Node<T>* right = nullptr;
+    BSTNode<T>* left = nullptr;
+    BSTNode<T>* right = nullptr;
 };
 
 template<typename T>
@@ -53,7 +53,7 @@ public:
 
     bool findMax(T& valOut) const
     {
-        Node<T>* current = findMaxRecursive(m_root);
+        BSTNode<T>* current = findMaxRecursive(m_root);
         if (!current)
             return false;
 
@@ -63,7 +63,7 @@ public:
 
     bool findMin(T& valOut) const
     {
-        Node<T>* current = findMinRecursive(m_root);
+        BSTNode<T>* current = findMinRecursive(m_root);
         if (!current)
             return false;
 
@@ -131,10 +131,10 @@ public:
     }
 
 private:
-    Node<T>* addRecursive(Node<T>* current, T v)
+    BSTNode<T>* addRecursive(BSTNode<T>* current, T v)
     {
         if (!current)
-            current = new Node<T>(v, nullptr, nullptr);
+            current = new BSTNode<T>(v, nullptr, nullptr);
         else if (v < current->data)
             current->left = addRecursive(current->left, v);
         else if (v > current->data)
@@ -142,7 +142,7 @@ private:
         return current;
     }
 
-    Node<T>* removeRecursive(Node<T>* current, T v)
+    BSTNode<T>* removeRecursive(BSTNode<T>* current, T v)
     {
         if (!current)
             return nullptr;
@@ -152,13 +152,13 @@ private:
             current->right = removeRecursive(current->right, v);
         else if (current->left && current->right) // have both children, swap with smallest right child
         {
-            Node<T>* temp = findMinRecursive(current->right); // find smallest child in right subtree
+            BSTNode<T>* temp = findMinRecursive(current->right); // find smallest child in right subtree
             current->data = temp->data; //swap data
             current->right = removeRecursive(current->right, current->data); // delete the child with swapped out data, in the right subtree
         }
         else // has either one of children, swap with it and delete the offspring
         {
-            Node<T>* temp = current;
+            BSTNode<T>* temp = current;
             if (!current->left)
                 current = current->right;
             else if (!current->right)
@@ -172,7 +172,7 @@ private:
         return current;
     }
 
-    Node<T>* findMinRecursive(Node<T>* current) const
+    BSTNode<T>* findMinRecursive(BSTNode<T>* current) const
     {
         if (!current)
             return nullptr;
@@ -182,7 +182,7 @@ private:
             return findMinRecursive(current->left);
     }
 
-    Node<T>* findMaxRecursive(Node<T>* current) const
+    BSTNode<T>* findMaxRecursive(BSTNode<T>* current) const
     {
         if (!current)
             return nullptr;
@@ -192,7 +192,7 @@ private:
             return findMaxRecursive(current->right);
     }
 
-    bool findRecursive(Node<T>* current, T v) const
+    bool findRecursive(BSTNode<T>* current, T v) const
     {
         if (!current)
             return false;
@@ -204,14 +204,14 @@ private:
             return findRecursive(current->right, v);
     }
 
-    int size(Node<T>* current) const
+    int size(BSTNode<T>* current) const
     {
         if (!current)
             return 0;
         return size(current->left) + 1 + size(current->right);
     }
 
-    int height(Node<T>* current) const
+    int height(BSTNode<T>* current) const
     {
         if (!current)
             return 0;
@@ -225,7 +225,7 @@ private:
             return rheight + 1;
     }
 
-    void printPreOrder(Node<T>* current) const
+    void printPreOrder(BSTNode<T>* current) const
     {
         if (!current)
             return;
@@ -234,7 +234,7 @@ private:
         printPreOrder(current->right);
     }
 
-    void printInOrder(Node<T>* current) const
+    void printInOrder(BSTNode<T>* current) const
     {
         if (!current)
             return;
@@ -243,7 +243,7 @@ private:
         printInOrder(current->right);
     }
 
-    void printPostOrder(Node<T>* current) const
+    void printPostOrder(BSTNode<T>* current) const
     {
         if (!current)
             return;
@@ -252,13 +252,13 @@ private:
         std::cout << current->data << " ";
     }
 
-    void printLevelOrder(Node<T>* current) const
+    void printLevelOrder(BSTNode<T>* current) const
     {
         if (!current)
             return;
         
         // use BFS with level marking
-        std::queue<Node<T>*> q;
+        std::queue<BSTNode<T>*> q;
         q.push(current);
         while (!q.empty())
         {
@@ -280,12 +280,12 @@ private:
         }
     }
 
-    void printPreOrderIterative(Node<T>* current) const
+    void printPreOrderIterative(BSTNode<T>* current) const
     {
         if (!current)
             return;
 
-        std::stack<Node<T>*> s;
+        std::stack<BSTNode<T>*> s;
         s.push(current);
 
         while (!s.empty())
@@ -302,12 +302,12 @@ private:
         }
     }
 
-    void printInOrderIterative(Node<T>* current) const
+    void printInOrderIterative(BSTNode<T>* current) const
     {
         if (!current)
             return;
 
-        std::stack<Node<T>*> s;
+        std::stack<BSTNode<T>*> s;
         while (!s.empty() || current)
         {
             if (current) // go as much as possible left
@@ -325,14 +325,14 @@ private:
         }
     }
 
-    void printPostOrderIterative(Node<T>* current) const
+    void printPostOrderIterative(BSTNode<T>* current) const
     {
         if (!current)
             return;
 
-        std::stack<Node<T>*> s;
+        std::stack<BSTNode<T>*> s;
 
-        Node<T>* lastNodeVisited = nullptr;
+        BSTNode<T>* lastBSTNodeVisited = nullptr;
         while (!s.empty() || current)
         {
             if (current)
@@ -342,17 +342,17 @@ private:
             }
             else // if there exists right node, and we are currently traversing from left, then go right
             {
-                Node<T>* peekNode = s.top();
-                if (peekNode->right && lastNodeVisited != peekNode->right) // eliminates infinite iterations
-                    current = peekNode->right;
+                BSTNode<T>* peekBSTNode = s.top();
+                if (peekBSTNode->right && lastBSTNodeVisited != peekBSTNode->right) // eliminates infinite iterations
+                    current = peekBSTNode->right;
                 else // otherwise print current 
                 {
-                    std::cout << peekNode->data << " ";
-                    lastNodeVisited = s.top();
+                    std::cout << peekBSTNode->data << " ";
+                    lastBSTNodeVisited = s.top();
                     s.pop();
                 }
             }
         }
     }
-    Node<T>* m_root = nullptr;
+    BSTNode<T>* m_root = nullptr;
 };

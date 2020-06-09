@@ -1,7 +1,8 @@
 #include <BST.hpp>
 #include <Trie.hpp>
+#include <RBTree.hpp>
 
-constexpr int algoChoice = 1;
+constexpr int algoChoice = 2;
 
 void testTree()
 {
@@ -83,11 +84,60 @@ void testTrie()
     std::cout << "Is 'steph'?: " << trie.search("steph") << std::endl;
 }
 
+void testRBTree()
+{
+    std::cout << "RBTree insertion" << std::endl;
+    RBTree<int> tree;
+    std::cout << "Inserting 1" << std::endl;
+    tree.insert(1);
+    tree.printTree();
+    std::cout << "Inserting 2" << std::endl;
+    tree.insert(2);
+    tree.printTree();
+    std::cout << "Inserting 3" << std::endl;
+    tree.insert(3);
+    tree.printTree();
+    std::cout << "Inserting 4" << std::endl;
+    tree.insert(4);
+    tree.printTree();
+    std::cout << "Inserting 5" << std::endl;
+    tree.insert(5);
+    tree.printTree();
+    std::cout << "Inserting 6" << std::endl;
+    tree.insert(6);
+    tree.printTree();
+
+    std::cout << "RBTree removal" << std::endl;
+    std::cout << "Removing 2" << std::endl;
+    tree.remove(2);
+    tree.printTree();
+    std::cout << "Removing 3" << std::endl;
+    tree.remove(3);
+    tree.printTree();
+    std::cout << "Removing 5" << std::endl;
+    tree.remove(5);
+    tree.printTree();
+    std::cout << "Removing Nonexistent" << std::endl;
+    std::cout << "Success: " << tree.remove(50) << std::endl;
+    tree.printTree();
+    std::cout << "Removing 1" << std::endl;
+    tree.remove(1);
+    tree.printTree();
+    std::cout << "Removing 4" << std::endl;
+    tree.remove(4);
+    tree.printTree();
+    std::cout << "Removing 6" << std::endl;
+    tree.remove(6);
+    tree.printTree();
+}
+
 int main()
 {
     if constexpr (algoChoice == 0) // BST
         testTree();
     else if constexpr (algoChoice == 1) // Trie
         testTrie();
+    else if constexpr (algoChoice == 2) // RBTree
+        testRBTree();
     return 0;
 }
