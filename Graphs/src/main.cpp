@@ -1,69 +1,54 @@
 #include <Algorithms.hpp>
+#include <Graphs.hpp>
+#include <deque>
 
-constexpr int algoChoice = 2;
+constexpr int algoChoice = 3;
 
-std::vector<std::vector<int>> buildAdjListGraph() // build either directed or bidirected graph
+AdjGraph buildAdjListGraph(int N, bool isBiDirectional) // build either directed or bidirected graph
 {
-    std::vector<std::vector<int>> adj;
-    // add 9 nodes so size is 10
-    for (int i = 0; i < 10; ++i)
-        adj.push_back({ });
-        
-    // add 1
-    adj[1].push_back(2);
-    adj[2].push_back(1);
-    adj[1].push_back(3);
-    adj[3].push_back(1);
-
-    // add 2
-    adj[2].push_back(7);
-    adj[7].push_back(2);
-    adj[2].push_back(3);
-    adj[3].push_back(2);
-
-    // add 3
-    adj[3].push_back(4);
-    adj[4].push_back(3);
-    adj[3].push_back(5);
-    adj[5].push_back(3);
-
-    // add 4
-    adj[4].push_back(7);
-    adj[7].push_back(4);
-    adj[4].push_back(8);
-    adj[8].push_back(4);
-
-    // add 5,6
-    adj[5].push_back(6);
-    adj[6].push_back(5);
-    
-    // 7 is already connected
-    // add 8 and 9
-    adj[8].push_back(9);
-    adj[9].push_back(8);
-
-    // build graph
-    return adj;
+    std::vector<Edge> edges = {
+        {1, 2}, {1, 3}, {2, 7}, {2, 3}, {3, 4}, {3, 5}, {4, 7}, {4, 8}, {5, 6}, {8, 9}
+    };
+    return {edges, N, isBiDirectional};
 }
 
-std::vector<std::vector<int>> buildAdjMatrixGraph()
+AdjWeightedGraph buildAdjWeightedGraph(int N, bool isBiDirectional)
 {
-    std::vector<std::vector<int>> adj;
+    std::vector<WEdge> edges = {
+        {1, 2, 3}, {1, 3, 2}, {2, 7, 4}, {2, 3, 1}, {3, 4, 2}, {3, 5, 5}, {4, 7, 2}, {4, 8, 1}, {5, 6, 8}, {8, 9, 3}, {4, 5, 1}, {1, 10, 1}, {3, 10, 2}, {5, 10, 15}
+    };
+    return {edges, N, isBiDirectional};
+
+}
+
+std::deque<std::deque<bool>> buildAdjMatrixGraph()
+{
+    std::deque<std::deque<bool>> matrix;
     
     // build graph
+    return matrix;
+}
+
+std::vector<std::vector<std::pair<int,int>>> buildWeightedAdjListGraph()
+{
+    std::vector<std::vector<std::pair<int,int>>> adj;
+
     return adj;
 }
 
 int main()
 {
-    std::vector<std::vector<int>> adjacencyList = buildAdjListGraph();
-    std::vector<std::vector<int>> adjacencyMatrix = buildAdjMatrixGraph();
+    AdjGraph biAdjGraph = buildAdjListGraph(10, true);
+    AdjWeightedGraph biAdjWeightedGraph = buildAdjWeightedGraph(11, true);
+    std::deque<std::deque<bool>> adjacencyMatrix = buildAdjMatrixGraph();
     if constexpr (algoChoice == 0)
-        recursiveDFS(adjacencyList, 1);
+        recursiveDFS(biAdjGraph.adjList, 1);
     else if (algoChoice == 1)
-        iterativeDFS(adjacencyList, 1);
+        iterativeDFS(biAdjGraph.adjList, 1);
     else if (algoChoice == 2)
-        iterativeBFS(adjacencyList, 1);
+        iterativeBFS(biAdjGraph.adjList, 1);
+    else if (algoChoice == 3)
+        Dijkstra(biAdjWeightedGraph.adjList, 1);
     //else if (algoChoice == 3)
     //    testRecursiveMatrixDFS();
     return 0;
