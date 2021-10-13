@@ -1,17 +1,17 @@
 /*
     Various sorting algorithm implementations
 */
-#include <HeapSort.hpp>
-#include <MergeSort.hpp>
-#include <InsertionSort.hpp>
-#include <QuickSort.hpp>
-#include <BucketSort.hpp>
+#include "HeapSort.hpp"
+#include "MergeSort.hpp"
+#include "InsertionSort.hpp"
+#include "QuickSort.hpp"
+#include "BucketSort.hpp"
 #include <algorithm>
 #include <numeric>
 #include <iostream>
 
 constexpr int arraySize = 10;
-constexpr int algoChoice = 6;
+constexpr int algoChoice = 7;
 
 int main()
 {
@@ -63,6 +63,9 @@ int main()
     } else if constexpr (algoChoice == 6) // bucket sort
     {
         bucketSort(data, arraySize, arraySize);
+    } else if constexpr (algoChoice == 7) // bucket sort with a sorted map (O(log n))
+    {
+        bucketSortMap(data, arraySize);
     }
 
     std::cout << "Sorted array: " << std::endl;
