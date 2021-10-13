@@ -5,11 +5,13 @@
 #include <MergeSort.hpp>
 #include <InsertionSort.hpp>
 #include <QuickSort.hpp>
+#include <BucketSort.hpp>
 #include <algorithm>
 #include <numeric>
+#include <iostream>
 
 constexpr int arraySize = 10;
-constexpr int algoChoice = 5;
+constexpr int algoChoice = 6;
 
 int main()
 {
@@ -26,7 +28,7 @@ int main()
             minHeap.push(data[i]);
             maxHeap.push(data[i]);
         }
-        
+
         minHeap.display();
         maxHeap.display();
 
@@ -58,6 +60,9 @@ int main()
     } else if constexpr (algoChoice == 5) // iterative quicksort
     {
         iterativeQuickSort(data, 0, arraySize - 1);
+    } else if constexpr (algoChoice == 6) // bucket sort
+    {
+        bucketSort(data, arraySize, arraySize);
     }
 
     std::cout << "Sorted array: " << std::endl;
